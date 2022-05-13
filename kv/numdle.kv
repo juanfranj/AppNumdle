@@ -1,0 +1,43 @@
+<Numdle>
+    FloatLayout:
+        padding: "5dp", "5dp"
+        #spacing: "5dp", "5dp"
+
+        canvas:
+            
+            Color:
+                rgba: 251/255, 252/255, 252/255
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDLabel:
+            pos_hint: {'right': 1,'top': 1}
+            size_hint: (.2, 0.05)
+            text: "Numdle"
+            font_style: "H6"
+        
+        GridLayout:
+            id:grid
+            padding: "5dp", "5dp"
+            spacing: "5dp", "5dp"
+            pos_hint:{'x':0.05, 'top': 0.95}
+            size_hint: (.9, .5)
+            rows: 6
+            cols: 8
+            row_force_default: True
+            row_default_height: "40dp"
+
+        GridLayout:
+            id:teclado
+            padding: "2dp", "2dp"
+            spacing: "5dp", "5dp"
+            pos_hint:{'x':0.05, 'top': 0.55}
+            size_hint: (.9, .2)
+            rows: 1
+            cols: 10
+            row_force_default: True
+            row_default_height: "40dp"
+            
+        
+        
