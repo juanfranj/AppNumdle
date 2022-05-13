@@ -24,6 +24,8 @@ class Numdle(Screen):
             self.boton= BotonRedondo()
             self.grid.add_widget(self.boton)
             self.celdas.append(self.boton)
+            if celda == 0:
+                self.boton.disabled = True
 
 
     def pulsar_boton(self):
