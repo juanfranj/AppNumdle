@@ -1,3 +1,49 @@
 #:include kv/numdle.kv
+MDNavigationLayout:
+    id: nav_layout
+    ScreenManager:
 
-Numdle:
+        Screen:
+
+            BoxLayout:
+                orientation: 'vertical'
+            
+                MDToolbar:
+                    title: app.title
+                    elevation: 0
+                    left_action_items: [["menu", lambda x: nav_drawer.set_state()]]
+                    #right_action_items: [["brightness-6", lambda x:root.change_mode(*args)]
+
+
+                ScreenManager:
+                    id:screen_manager
+
+                    Numdle:
+                        id: numdle
+                        name: "numdle"
+
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        open_progress: 0
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '8dp'
+            spacing: '8dp'
+
+            # Image:
+            #     source: "resources/logo.png"
+            
+            ScrollView:
+
+                MDList:
+
+                    OneLineIconListItem:
+                        text: "Numdle"
+                        # Aquí va lo que queremos ejecutar cuando se suelta el botón
+                        on_release:
+                            screen_manager.current = "numdle"
+                            nav_drawer.set_state()
+                        IconLeftWidget:
+                            icon: "language-python"

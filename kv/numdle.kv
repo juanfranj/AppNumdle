@@ -20,7 +20,7 @@
         GridLayout:
             id:grid
             padding: "5dp", "5dp"
-            spacing: "5dp", "5dp"
+            spacing: "4dp", "4dp"
             pos_hint:{'x':0.05, 'top': 0.95}
             size_hint: (.9, .5)
             rows: 6
@@ -31,11 +31,21 @@
         GridLayout:
             id:teclado
             padding: "2dp", "2dp"
-            spacing: "5dp", "5dp"
-            pos_hint:{'x':0.05, 'top': 0.55}
+            spacing: "4dp", "4dp"
+            pos_hint:{'x':0.05, 'top': 0.52}
             size_hint: (.9, .2)
             rows: 1
             cols: 10
+            row_force_default: True
+            row_default_height: "40dp"
+        GridLayout:
+            id:simbolos
+            padding: "3dp", "3dp"
+            spacing: "4dp", "4dp"
+            pos_hint:{'x':0.1, 'top': 0.45}
+            size_hint: (.8, .2)
+            rows: 1
+            cols: 7
             row_force_default: True
             row_default_height: "40dp"
             

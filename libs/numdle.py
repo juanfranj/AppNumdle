@@ -10,26 +10,36 @@ class Numdle(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app = MDApp.get_running_app()
-        self.celdas = []
+        self.celdas =[[None for j in range(0,8)] for i in range(0,6)]
 
     def on_kv_post(self, base_widget):
         self.grid = self.ids["grid"]
         self.teclas = self.ids["teclado"]
-        teclado_digitos = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] 
-        for celda in range(0,48):
-            if celda < 10:
-                self.teclado = TecladoBotonRedondo(nombre = str(celda))
-                self.teclas.add_widget(self.teclado)
+        self.simbolos = self.ids["simbolos"]
+        simbolos = {"sumar": "+", "restar":"-",
+                    "multiplicar" : "*", "dividir":"/",
+                    "calcular": "Calcular", "Borrar": "Borrar"
+                    }
+        for i in range(0,6):
+            for j in range(0,8):
+                self.boton= BotonRedondo(widgets = self.celdas)
+                self.grid.add_widget(self.boton)
+                self.celdas[i][j] = self.boton
+                if i == 0 and j == 0:
+                    self.boton.disabled = True
 
-            self.boton= BotonRedondo()
-            self.grid.add_widget(self.boton)
-            self.celdas.append(self.boton)
-            if celda == 0:
-                self.boton.disabled = True
+        for celda in range(0,10):
+            self.teclado = TecladoBotonRedondo(nombre = str(celda))
+            self.teclas.add_widget(self.teclado)
+
+        for clave, valor in simbolos.items():
+            self.teclado = TecladoBotonRedondo(nombre = valor)
+            self.simbolos.add_widget(self.teclado)
 
 
     def pulsar_boton(self):
         pass
+
     def update_rect(self, *args):
         self.rect.pos = self.pos
         self.rect.size = self.size   
