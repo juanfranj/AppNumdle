@@ -1,15 +1,19 @@
 from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle
 from kivy.metrics import dp, sp
+from collections import Counter
 
+#from libs.numdle import Numdle
+intento = 0
 
 class BotonRedondo(Button):
-
+    global intento
     def __init__(self, **kwargs):
 
         super().__init__()
         self.widgets = kwargs["widgets"]
-        self.fila = kwargs["intento"]
+        #self.fila = kwargs["intento"]
+        self.fila = intento
         with self.canvas.before:
                 self.btn_color = Color(rgba=(151/255, 154/255, 154/255, 1))
                 self.rect = RoundedRectangle(radius=[10], size = self.size, pos = self.pos)
@@ -30,15 +34,13 @@ class BotonRedondo(Button):
         self.rect_2.size = (self.width - dp(5), self.height - dp(5))
     
     def on_press(self):
+        print(self.fila, intento)
         for i in range(len(self.widgets)):
             for j in range(len(self.widgets[i])):
-                if id(self) == id(self.widgets[i][j]) and i == self.fila:
+                if id(self) == id(self.widgets[i][j]) and i == intento:#i == self.fila:
                     #print(id(self), id(self.widgets[i][j]))
                     self.limpiar_desactivar()
                     self.disabled = True
-    
-    # def on_release(self):
-    #     self.btn_color.rgba =  (151/255, 154/255, 154/255, 1) 
 
     def desactivar(self, *args):
         if self.disabled == True:
@@ -52,6 +54,8 @@ class BotonRedondo(Button):
                 #print(self.widgets[i][j].disabled)
                 self.widgets[i][j].btn_color.rgba=(151/255, 154/255, 154/255, 1)
                 self.widgets[i][j].disabled = False
+    
+    
 
     
 class TecladoBotonRedondo(Button):
@@ -61,6 +65,11 @@ class TecladoBotonRedondo(Button):
         super().__init__()
         self.texto = kwargs["nombre"]
         self.widgets = kwargs["widgets"]
+        self.solucion = kwargs["solucion"]
+        self.teclado = kwargs["teclas"]
+        #self.fila = kwargs["intento"]
+        #self.fila = intento
+        
         with self.canvas.before:
                 self.btn_color = Color(rgba=(174/255, 214/255, 241/255, 1))
                 self.rect = RoundedRectangle(radius=[8], size = self.size, pos = self.pos)
@@ -85,6 +94,8 @@ class TecladoBotonRedondo(Button):
             self.desactivar_siguiente(i, j)
         elif self.text == "Borrar":
             self.borrar(i, j)
+        else:
+            self.calcular_expersion()
     
     def on_release(self):
         self.btn_color.rgba =  (174/255, 214/255, 241/255, 1) 
@@ -128,5 +139,24 @@ class TecladoBotonRedondo(Button):
             j_next = j - 1
         self.limpiar_desactivar()
         self.widgets[i][j_next].disabled = True
+    
+    def calcular_expersion(self):
+        global intento
+        solucion = self.solucion.split("=")
+        digitos = Counter(self.solucion)
+        #print(f"La expresion solucion es: {self.solucion}")
+        #print(f"Solucion: {eval(solucion[0])} == {solucion[1]}")
+        #print(digitos)
+        #print(intento)
+        intento += 1
+        if intento < 6:
+            self.limpiar_desactivar()
+            self.widgets[intento][0].disabled = True
+        else:
+            print("Maximo numero de intentos")
+       
+        
+        
+        
 
         

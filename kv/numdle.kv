@@ -11,17 +11,17 @@
                 pos: self.pos
                 size: self.size
 
-        MDLabel:
-            pos_hint: {'right': 1,'top': 1}
-            size_hint: (.2, 0.05)
-            text: "numdle."
-            #font_style: "H6"
+        # MDLabel:
+        #     pos_hint: {'right': 1,'top': 1}
+        #     size_hint: (.2, 0.05)
+        #     text: "numdle."
+        #     font_style: "H6"
         
         GridLayout:
             id:grid
             padding: "5dp", "5dp"
             spacing: "4dp", "4dp"
-            pos_hint:{'x':0.05, 'top': 0.95}
+            pos_hint:{'x':0.05, 'top': .98}
             size_hint: (.9, .5)
             rows: 6
             cols: 8
@@ -33,7 +33,7 @@
             id:teclado
             padding: "2dp", "2dp"
             spacing: "4dp", "4dp"
-            pos_hint:{'x':0.05, 'top': 0.52}
+            pos_hint:{'x':0.05, 'top': 0.55}
             size_hint: (.9, .2)
             rows: 1
             cols: 10
@@ -44,8 +44,8 @@
             id:simbolos
             padding: "3dp", "3dp"
             spacing: "4dp", "4dp"
-            pos_hint:{'x':0.1, 'top': 0.45}
-            size_hint: (.8, .2)
+            pos_hint:{'x':0.08, 'top': 0.48}
+            size_hint: (.84, .2)
             rows: 1
             cols: 7
             row_force_default: True

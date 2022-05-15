@@ -4,6 +4,7 @@ from kivy.lang import Builder
 
 from libs.numdle import Numdle
 
+
 class AppNumdle(MDApp):
     def build(self):
         Window.size = (450, 720)
