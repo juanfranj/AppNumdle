@@ -20,6 +20,8 @@ class Numdle(Screen):
         self.grid = self.ids["grid"]
         self.teclas = self.ids["teclado"]
         self.simbolos = self.ids["simbolos"]
+        self.errores = self.ids["error"]
+        self.mensaje = self.ids["mensaje"]
         simbolos = {"sumar": "+", "restar":"-",
                     "multiplicar" : "*", "dividir":"/", "igual": "=",
                     "calcular": "Calcular", "Borrar": "Borrar"
@@ -33,12 +35,14 @@ class Numdle(Screen):
                     self.boton.disabled = True
 
         for celda in range(0,10):
-            self.teclado = TecladoBotonRedondo(nombre = str(celda), widgets = self.celdas, teclas = self.panel_teclado, solucion = self.solucion, intento = self.intento)
+            self.teclado = TecladoBotonRedondo(nombre = str(celda), widgets = self.celdas, teclas = self.panel_teclado, solucion = self.solucion,
+                                                 intento = self.intento, errores = self.errores, mensaje = self.mensaje)
             self.panel_teclado.append(self.teclado)
             self.teclas.add_widget(self.teclado)
 
         for clave, valor in simbolos.items():
-            self.teclado = TecladoBotonRedondo(nombre = valor, widgets = self.celdas, teclas = self.panel_teclado, solucion = self.solucion, intento = self.intento)
+            self.teclado = TecladoBotonRedondo(nombre = valor, widgets = self.celdas, teclas = self.panel_teclado, solucion = self.solucion,
+                                                 intento = self.intento, errores = self.errores, mensaje = self.mensaje)
             self.panel_teclado.append(self.teclado)
             self.simbolos.add_widget(self.teclado)
 

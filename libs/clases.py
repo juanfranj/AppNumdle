@@ -1,10 +1,15 @@
 from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle
 from kivy.metrics import dp, sp
+from kivy.clock import Clock
 from collections import Counter
+
 
 #from libs.numdle import Numdle
 intento = 0
+
+
+
 
 class BotonRedondo(Button):
     global intento
@@ -34,7 +39,7 @@ class BotonRedondo(Button):
         self.rect_2.size = (self.width - dp(5), self.height - dp(5))
     
     def on_press(self):
-        print(self.fila, intento)
+        #print(self.fila, intento)
         for i in range(len(self.widgets)):
             for j in range(len(self.widgets[i])):
                 if id(self) == id(self.widgets[i][j]) and i == intento:#i == self.fila:
@@ -67,6 +72,8 @@ class TecladoBotonRedondo(Button):
         self.widgets = kwargs["widgets"]
         self.solucion = kwargs["solucion"]
         self.teclado = kwargs["teclas"]
+        self.errores = kwargs["errores"]
+        self.mensaje = kwargs["mensaje"]
         #self.fila = kwargs["intento"]
         #self.fila = intento
         
@@ -77,25 +84,31 @@ class TecladoBotonRedondo(Button):
         self.color = (23/255, 32/255, 42/255, 1)
         self.bold = True
         self.text = self.texto
-        self.font_size = "17sp"
+        self.font_style = "H6"
+        #self.font_size = "17sp"
         self.background_color = (0,0,0,0)
         self.background_normal = ""
         if self.texto == "Calcular" or self.texto == "Borrar":
             self.size_hint_x = None
-            self.widht = self.width * 1.1
+            self.width = self.teclado[0].size[0] * .8
+            #self.width = minimum_width
+            
         if self.texto in ["+", "-", "*", "/", "="]:
-            self.font_size = "20sp"
+            #self.font_size = "18sp"
+            self.font_style = "H6"
+        
 
     def on_press(self):
-        self.btn_color.rgba =  (46/255, 134/255, 193/255, 1)
-        i, j = self.buscar_posicion()
-        if self.text not in ["Calcular", "Borrar"]:
-            self.widgets[i][j].text = self.text
-            self.desactivar_siguiente(i, j)
-        elif self.text == "Borrar":
-            self.borrar(i, j)
-        else:
-            self.calcular_expersion()
+        if intento < 6:
+            self.btn_color.rgba =  (46/255, 134/255, 193/255, 1)
+            i, j = self.buscar_posicion()
+            if self.text not in ["Calcular", "Borrar"]:
+                self.widgets[i][j].text = self.text
+                self.desactivar_siguiente(i, j)
+            elif self.text == "Borrar":
+                self.borrar(i, j)
+            else:
+                self.calcular_expersion()
     
     def on_release(self):
         self.btn_color.rgba =  (174/255, 214/255, 241/255, 1) 
@@ -129,8 +142,9 @@ class TecladoBotonRedondo(Button):
                 self.widgets[i][j].disabled = False
     
     def borrar(self, i, j):
-        self.widgets[i][j].text = ""
-        self.desactivar_enterior(i, j)
+        if intento < 6:
+            self.widgets[i][j].text = ""
+            self.desactivar_enterior(i, j)
     
     def desactivar_enterior(self, i , j):
         if j == 0:
@@ -144,19 +158,44 @@ class TecladoBotonRedondo(Button):
         global intento
         solucion = self.solucion.split("=")
         digitos = Counter(self.solucion)
-        #print(f"La expresion solucion es: {self.solucion}")
-        #print(f"Solucion: {eval(solucion[0])} == {solucion[1]}")
-        #print(digitos)
-        #print(intento)
-        intento += 1
         if intento < 6:
+            self.evaluar_expresion()
             self.limpiar_desactivar()
             self.widgets[intento][0].disabled = True
+            
         else:
+            self.limpiar_desactivar()
             print("Maximo numero de intentos")
        
         
-        
-        
+    def evaluar_expresion(self):
+        try:
+            global intento
+            expresion = ""
+            for digito in self.widgets[intento][:]:
+                expresion += digito.text
+            digitos = Counter(expresion)
+            if len(expresion) < 8:
+                self.mensaje.text = f"Completa la expresion."
+                self.errores.pos_hint = {'x':0.025, 'top': .99}
+            elif digitos["="] == 0 or digitos["="] > 1:
+                self.mensaje.text = (f"Expresion no evaluable.")
+                self.errores.pos_hint = {'x':0.025, 'top': .99}
+            else:
+                ecuacion, solucion = expresion.split("=")[0], expresion.split("=")[1]
+                print("Ecuacion: ",ecuacion,"Solucion: " ,solucion)
+                sol_ec = eval(ecuacion)
+                print(f"{ecuacion} = {sol_ec} = {solucion}")
+                intento += 1
+        except:
+            self.mensaje.text = (f"Expresion no evaluable.")
+            self.errores.pos_hint = {'x':0.025, 'top': .99}
+        Clock.schedule_once(self.quitar_error, 2)
 
-        
+    def quitar_error(self, dt):
+        self.errores.pos_hint = {'x':0.025, 'top': 2}
+
+
+
+
+            

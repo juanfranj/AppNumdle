@@ -19,37 +19,58 @@
         
         GridLayout:
             id:grid
-            padding: "5dp", "5dp"
+            padding: "1dp", "1dp"
             spacing: "4dp", "4dp"
-            pos_hint:{'x':0.05, 'top': .98}
-            size_hint: (.9, .5)
+            pos_hint:{'x':0.025, 'top': .99}
+            size_hint: (.95, .4)
             rows: 6
             cols: 8
-            row_force_default: True
-            row_default_height: "40dp"
+            #row_force_default: True
+            #row_default_height: "40dp"
+            #height: self.minimum_height
+
             
 
         GridLayout:
             id:teclado
-            padding: "2dp", "2dp"
+            padding: "1dp", "1dp"
             spacing: "4dp", "4dp"
-            pos_hint:{'x':0.05, 'top': 0.55}
-            size_hint: (.9, .2)
+            pos_hint:{'x':0.025, 'top': 0.58}
+            size_hint: (.95, .06)
             rows: 1
             cols: 10
-            row_force_default: True
-            row_default_height: "40dp"
+            # row_force_default: True
+            # row_default_height: "40dp"
             
         GridLayout:
             id:simbolos
             padding: "3dp", "3dp"
             spacing: "4dp", "4dp"
-            pos_hint:{'x':0.08, 'top': 0.48}
-            size_hint: (.84, .2)
+            pos_hint:{'x':0.05, 'top': 0.52}
+            size_hint: (.9, .06)
             rows: 1
             cols: 7
-            row_force_default: True
-            row_default_height: "40dp"
-            
+            # row_force_default: True
+            # row_default_height: "40dp"
+        
+        BoxLayout:
+            id:error
+            padding: "1dp", "1dp"
+            pos_hint:{'x':0.025, 'top': 2}
+            size_hint: (.95, .1)
+            canvas:
+                Color:
+                    rgba: 245/255, 183/255, 177/255, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10]
+            Label:
+                id: mensaje
+                text: "Prueba"
+                halign: "center"
+                font_style: "H6"
+                font_size: "18sp"
+                color: 0, 0, 0, 1            
         
         
