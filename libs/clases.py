@@ -5,7 +5,7 @@ from kivy.clock import Clock
 from collections import Counter
 
 
-#from libs.numdle import Numdle
+#from /libs.numdle import Numdle
 intento = 0
 
 
@@ -158,10 +158,12 @@ class TecladoBotonRedondo(Button):
         global intento
         solucion = self.solucion.split("=")
         digitos = Counter(self.solucion)
+
         if intento < 6:
-            self.evaluar_expresion()
-            self.limpiar_desactivar()
-            self.widgets[intento][0].disabled = True
+            expresion_correcta = self.evaluar_expresion()
+            if expresion_correcta:
+                self.limpiar_desactivar()
+                self.widgets[intento][0].disabled = True
             
         else:
             self.limpiar_desactivar()
@@ -172,6 +174,7 @@ class TecladoBotonRedondo(Button):
         try:
             global intento
             expresion = ""
+            expresion_correcta = False
             for digito in self.widgets[intento][:]:
                 expresion += digito.text
             digitos = Counter(expresion)
@@ -179,21 +182,58 @@ class TecladoBotonRedondo(Button):
                 self.mensaje.text = f"Completa la expresion."
                 self.errores.pos_hint = {'x':0.025, 'top': .99}
             elif digitos["="] == 0 or digitos["="] > 1:
-                self.mensaje.text = (f"Expresion no evaluable.")
+                self.mensaje.text = (f"Dos iguales.")
                 self.errores.pos_hint = {'x':0.025, 'top': .99}
+            elif self.digitos_repetidos(expresion, digitos):
+                self.mensaje.text = (f"Simbolo repetido.")
+                self.errores.pos_hint = {'x':0.025, 'top': .99}
+            
             else:
                 ecuacion, solucion = expresion.split("=")[0], expresion.split("=")[1]
-                print("Ecuacion: ",ecuacion,"Solucion: " ,solucion)
                 sol_ec = eval(ecuacion)
-                print(f"{ecuacion} = {sol_ec} = {solucion}")
-                intento += 1
+                if solucion != str(sol_ec):
+                    print("Solucion: ",solucion,"Solucion_calculada: " ,sol_ec)
+                    self.mensaje.text = (f"Expresion mal calculada.")
+                    self.errores.pos_hint = {'x':0.025, 'top': .99}
+                else:
+                    print("Ecuacion: ",ecuacion,"Solucion: " ,solucion)
+                    print(f"{ecuacion} = {sol_ec} = {solucion}")
+                    intento += 1
+                    expresion_correcta = True
         except:
-            self.mensaje.text = (f"Expresion no evaluable.")
+            self.mensaje.text = (f"Expresion no Evaluable.")
             self.errores.pos_hint = {'x':0.025, 'top': .99}
         Clock.schedule_once(self.quitar_error, 2)
+        return expresion_correcta
 
     def quitar_error(self, dt):
         self.errores.pos_hint = {'x':0.025, 'top': 2}
+
+    def digitos_repetidos(self, expresion, digitos):
+        consec = False
+        #print(consec, digitos, expresion)
+        for clave, valor in digitos.items():
+        
+            if clave in ["+", "-", "*", "/", "="]:
+                temp = list(expresion)
+                #print(clave, valor)
+                while valor > 0:
+                    pos = temp.index(clave)
+                    #print(temp, valor, pos)
+                    del temp[pos]
+                    #print(temp)
+                    if temp[pos] in ["+", "-", "*", "/", "="]:
+                        valor = 0
+                        consec = True
+                        break
+                    else:
+                        valor -= 1
+                        
+        #print(consec)
+        return consec
+
+                
+
 
 
 
